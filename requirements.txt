@@ -34,6 +34,7 @@ notebook==6.4.0
 packaging==20.9
 pandocfilters==1.4.3
 parso==0.8.2
+peewee==3.14.4
 pickleshare==0.7.5
 pluggy==0.13.1
 prometheus-client==0.11.0
