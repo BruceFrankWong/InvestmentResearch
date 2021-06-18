@@ -32,7 +32,7 @@ CONFIGS: Dict[str, Any] = {
         'driver': 'sqlite',
         'host': '',
         'port': '',
-        'database': 'InvestmentWorkshop.sqlite',
+        'database': f'{PACKAGE_NAME}.sqlite',
         'user': '',
         'password': '',
     },
