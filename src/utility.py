@@ -8,15 +8,19 @@ from pathlib import Path
 import json
 
 
-__all__ = ['PACKAGE_PATH', 'CONFIG_PATH', 'CONFIGS']
+__all__ = ['PACKAGE_NAME', 'PACKAGE_PATH', 'CONFIG_PATH', 'CONFIGS']
 
 
-# The path of the packages <InvestmentWorkshop>
+# The package name.
+PACKAGE_NAME: str = 'InvestmentResearch'
+
+
+# The package path <InvestmentWorkshop>
 PACKAGE_PATH: Path = Path(__file__).parent
 
 
 # Tha path of the user custom config file.
-CONFIG_PATH: Path = Path.home().joinpath('.investment')
+CONFIG_PATH: Path = Path.home().joinpath(f'.{PACKAGE_NAME}')
 if not CONFIG_PATH.exists():
     CONFIG_PATH.mkdir()
 
