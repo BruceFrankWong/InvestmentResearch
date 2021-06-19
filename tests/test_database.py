@@ -55,3 +55,15 @@ def test_database_initialize_holiday():
     db.connect()
     initialize_holiday()
     db.close()
+
+
+@pytest.mark.run(order=7)
+def test_database_initialize_exchange():
+    """
+    Test for initialize exchange.
+    """
+    from src.database import db, initialize_exchange
+
+    db.connect()
+    initialize_exchange()
+    db.close()

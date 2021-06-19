@@ -14,6 +14,7 @@ from .interface import db
 from .model import (
     Country,
     Holiday,
+    Exchange,
 )
 
 
@@ -24,6 +25,7 @@ def create_model_tables():
     model_list: List[Model] = [
         Country,
         Holiday,
+        Exchange,
     ]
     db.create_tables(model_list)
 
@@ -72,7 +74,29 @@ def initialize_holiday():
         Holiday.bulk_create(model_list, batch_size=100)
 
 
+def initialize_exchange():
+    csv_path: Path = INITIAL_DATA_PATH.joinpath('exchange.csv')
+
+    model_list: List[Model] = []
+    with open(csv_path, mode='r', newline='', encoding='utf-8') as csv_file:
+        reader = csv.DictReader(csv_file)
+        model_list = [
+            Exchange(
+                symbol=row['symbol'],
+                name=row['name'],
+                fullname=row['fullname'],
+                url=row['url'],
+                country=Country.get(Country.alpha3 == row['country'])
+            ) for row in reader
+        ]
+    
+    Exchange.create_table()
+    with db.atomic():
+        Exchange.bulk_create(model_list, batch_size=100)
+
+
 def initialize_all():
     create_model_tables()
     initialize_country()
     initialize_holiday()
+    initialize_exchange()

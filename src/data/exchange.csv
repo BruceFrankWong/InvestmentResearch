@@ -1,0 +1,9 @@
+symbol,name,fullname,country,url
+SSE,上交所,上海证券交易所,CHN,http://www.sse.com.cn/
+SZSE,深交所,深圳证券交易所,CHN,http://www.szse.cn/
+SHFE,上期所,上海期货交易所,CHN,http://www.shfe.com.cn/
+DCE,大商所,大连商品交易所,CHN,http://www.dce.com.cn/
+CZCE,郑商所,郑州商品交易所,CHN,http://www.czce.com.cn/
+CFFEX,中金所,中国金融期货交易所,CHN,http://www.cffex.com.cn/
+INE,能源所,上海国际能源交易中心,CHN,http://www.ine.cn/
+HKEX,港交所,香港交易所,HKG,https://www.hkex.com.hk/?sc_lang=zh-hk
