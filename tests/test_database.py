@@ -31,3 +31,16 @@ def test_database_interface():
 
     sqlite_path.unlink()
     assert sqlite_path.exists() is False
+
+
+@pytest.mark.run(order=5)
+def test_database_initialize_country():
+    """
+    Test for initialize country.
+    """
+    from src.database import db, create_model_tables, initialize_country
+
+    db.connect()
+    create_model_tables()
+    initialize_country()
+    db.close()
