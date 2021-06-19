@@ -13,6 +13,7 @@ from utility import PACKAGE_PATH
 from .interface import db
 from .model import (
     Country,
+    Holiday,
 )
 
 
@@ -22,6 +23,7 @@ INITIAL_DATA_PATH: Path = PACKAGE_PATH.joinpath('data')
 def create_model_tables():
     model_list: List[Model] = [
         Country,
+        Holiday,
     ]
     db.create_tables(model_list)
 
@@ -44,9 +46,33 @@ def initialize_country():
             ) for row in reader
         ]
     
+    Country.create_table()
     with db.atomic():
         Country.bulk_create(model_list, batch_size=100)
 
 
+def initialize_holiday():
+    csv_path: Path = INITIAL_DATA_PATH.joinpath('holiday.csv')
+
+    model_list: List[Model] = []
+    with open(csv_path, mode='r', newline='', encoding='utf-8') as csv_file:
+        reader = csv.DictReader(csv_file)
+        model_list = [
+            Holiday(
+                begin=row['begin'],
+                end=row['end'],
+                name=row['name'],
+                url=row['url'],
+                country=Country.get(Country.alpha3 == row['country'])
+            ) for row in reader
+        ]
+    
+    Holiday.create_table()
+    with db.atomic():
+        Holiday.bulk_create(model_list, batch_size=100)
+
+
 def initialize_all():
+    create_model_tables()
     initialize_country()
+    initialize_holiday()

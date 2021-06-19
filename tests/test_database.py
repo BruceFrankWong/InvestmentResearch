@@ -33,14 +33,25 @@ def test_database_interface():
     assert sqlite_path.exists() is False
 
 
-@pytest.mark.run(order=5)
+@pytest.mark.run(order=6)
 def test_database_initialize_country():
     """
     Test for initialize country.
     """
-    from src.database import db, create_model_tables, initialize_country
+    from src.database import db, initialize_country
 
     db.connect()
-    create_model_tables()
     initialize_country()
+    db.close()
+
+
+@pytest.mark.run(order=7)
+def test_database_initialize_holiday():
+    """
+    Test for initialize holiday.
+    """
+    from src.database import db, initialize_holiday
+
+    db.connect()
+    initialize_holiday()
     db.close()

@@ -6,10 +6,12 @@ __author__ = 'Bruce Frank Wong'
 from .interface import db
 from .model import (
     Country,
+    Holiday
 )
 from .initializer import (
     create_model_tables,
     initialize_country,
+    initialize_holiday,
     initialize_all,
 )
 
@@ -18,6 +20,7 @@ __all__ = [
     'db',
     'create_model_tables',
     'initialize_country',
+    'initialize_holiday',
     'initialize_all',
     'Country',
 ]
