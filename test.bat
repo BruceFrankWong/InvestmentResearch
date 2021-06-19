@@ -2,4 +2,4 @@
 REM Run pytest.
 
 set PYTHONPATH=%~dp0src
-python -m pytest
+python -m pytest -v
