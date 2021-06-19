@@ -12,12 +12,12 @@ from peewee import (
     PostgresqlDatabase
 )
 
-from utility import CONFIGS
+from utility import CONFIGS, PACKAGE_PATH
 
 
 def create_sqlite_database(settings: Dict[str, str]) -> SqliteDatabase:
     return SqliteDatabase(
-        settings['database'],
+        PACKAGE_PATH.joinpath(settings['database']),
         pragmas={
             'journal_mode': 'wal',
             'encoding': 'utf8',
