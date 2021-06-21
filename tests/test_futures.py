@@ -8,16 +8,15 @@ import pytest
 from typing import Any, Dict, List
 import datetime as dt
 
-from src.database import db, Exchange
-from src.database.model.futures import FuturesProduct, FuturesContract    # , TransactionRule
-
 
 @pytest.mark.run(order=8)
 def test_product():
     """
     Test for simulation.
     """
-    # Futures.
+    # To pass test_utility.test_config_path, any import about InvestmentResearch should in test case.
+    from InvestmentResearch.database import db, Exchange
+    from InvestmentResearch.database.model.futures import FuturesProduct
 
     # Create models but not commit into database with simulation data.
     product_data_list: List[Dict[str, Any]] = [
@@ -57,6 +56,10 @@ def test_contract():
     """
     Test for simulation.
     """
+    # To pass test_utility.test_config_path, any import about InvestmentResearch should in test case.
+    from InvestmentResearch.database import db
+    from InvestmentResearch.database.model.futures import FuturesProduct, FuturesContract
+
     # Contract.
     contract_data_list: List[Dict[str, Any]] = [
         {

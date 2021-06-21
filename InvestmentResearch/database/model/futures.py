@@ -26,8 +26,8 @@ class FuturesProduct(Model):
     symbol = FixedCharField(verbose_name='品种代码', max_length=2, unique=True)
     name_zh = CharField(verbose_name='品种中文名称')
     name_en = CharField(verbose_name='品种英文名称')
-    section = IntegerField(verbose_name='交易节数量')
-    optional_section = IntegerField(verbose_name='可选交易节序号')
+    # section = IntegerField(verbose_name='交易节数量')
+    # optional_section = IntegerField(verbose_name='可选交易节序号')
     exchange = ForeignKeyField(Exchange, backref='futures_list', on_delete='CASCADE')
 
     class Meta:
