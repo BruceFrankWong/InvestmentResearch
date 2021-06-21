@@ -13,7 +13,7 @@ def test_database_interface():
     """
     Test for SQLite.
     """
-    from src.utility import PACKAGE_PATH, CONFIGS
+    from InvestmentResearch.utility import PACKAGE_PATH, CONFIGS
 
     sqlite_path: Path = PACKAGE_PATH.joinpath(CONFIGS['database']['database'])
     if sqlite_path.exists():
@@ -21,7 +21,7 @@ def test_database_interface():
     
     assert sqlite_path.exists() is False
 
-    from src.database import db
+    from InvestmentResearch.database import db
     db.connect()
     db.execute_sql('CREATE TABLE test(name varchar);')
     db.commit()
@@ -38,7 +38,7 @@ def test_database_initialize_country():
     """
     Test for initialize country.
     """
-    from src.database import db, initialize_country
+    from InvestmentResearch.database import db, initialize_country
 
     db.connect()
     initialize_country()
@@ -50,7 +50,7 @@ def test_database_initialize_holiday():
     """
     Test for initialize holiday.
     """
-    from src.database import db, initialize_holiday
+    from InvestmentResearch.database import db, initialize_holiday
 
     db.connect()
     initialize_holiday()
@@ -62,7 +62,7 @@ def test_database_initialize_exchange():
     """
     Test for initialize exchange.
     """
-    from src.database import db, initialize_exchange
+    from InvestmentResearch.database import db, initialize_exchange
 
     db.connect()
     initialize_exchange()
