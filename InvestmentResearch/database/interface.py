@@ -12,7 +12,7 @@ from peewee import (
     PostgresqlDatabase
 )
 
-from utility import CONFIGS, PACKAGE_PATH
+from InvestmentResearch.utility import CONFIGS, PACKAGE_PATH
 
 
 def create_sqlite_database(settings: Dict[str, str]) -> SqliteDatabase:
