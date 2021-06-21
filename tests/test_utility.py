@@ -20,24 +20,25 @@ def test_config_path():
         config_path.rmdir()
     assert config_path.exists() is False
 
-    from src.utility import CONFIG_PATH
+    from InvestmentResearch.utility import CONFIG_PATH
     assert config_path.exists() is True
 
 
 @pytest.mark.run(order=2)
 def test_package_name():
-    from src.utility import PACKAGE_NAME
+    from InvestmentResearch.utility import PACKAGE_NAME
     assert PACKAGE_NAME == PROJECT_NAME
 
 
 @pytest.mark.run(order=3)
 def test_package_path():
-    from src.utility import PACKAGE_PATH
-    assert PACKAGE_PATH == Path(r'D:\Development\Jupyter\InvestmentResearch\src')
+    from InvestmentResearch import utility
+    from InvestmentResearch.utility import PACKAGE_PATH
+    assert PACKAGE_PATH == Path(utility.__file__).parent
 
 
 @pytest.mark.run(order=4)
 def test_configs():
-    from src.utility import CONFIGS
+    from InvestmentResearch.utility import CONFIGS
 
     assert isinstance(CONFIGS, dict) is True
