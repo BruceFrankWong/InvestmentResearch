@@ -3,13 +3,13 @@
 __author__ = 'Bruce Frank Wong'
 
 
-from typing import Dict, List
+from typing import List, Type
 from pathlib import Path
 import csv
 
 from peewee import Model
 
-from utility import PACKAGE_PATH
+from InvestmentResearch.utility import PACKAGE_PATH
 from .interface import db
 from .model import (
     Country,
@@ -22,7 +22,7 @@ INITIAL_DATA_PATH: Path = PACKAGE_PATH.joinpath('data')
 
 
 def create_model_tables():
-    model_list: List[Model] = [
+    model_list: List[Type[Model]] = [
         Country,
         Holiday,
         Exchange,
@@ -33,7 +33,6 @@ def create_model_tables():
 def initialize_country():
     csv_path: Path = INITIAL_DATA_PATH.joinpath('country.csv')
 
-    model_list: List[Model] = []
     with open(csv_path, mode='r', newline='', encoding='utf-8') as csv_file:
         reader = csv.DictReader(csv_file)
         model_list = [
@@ -56,7 +55,6 @@ def initialize_country():
 def initialize_holiday():
     csv_path: Path = INITIAL_DATA_PATH.joinpath('holiday.csv')
 
-    model_list: List[Model] = []
     with open(csv_path, mode='r', newline='', encoding='utf-8') as csv_file:
         reader = csv.DictReader(csv_file)
         model_list = [
@@ -77,7 +75,6 @@ def initialize_holiday():
 def initialize_exchange():
     csv_path: Path = INITIAL_DATA_PATH.joinpath('exchange.csv')
 
-    model_list: List[Model] = []
     with open(csv_path, mode='r', newline='', encoding='utf-8') as csv_file:
         reader = csv.DictReader(csv_file)
         model_list = [
