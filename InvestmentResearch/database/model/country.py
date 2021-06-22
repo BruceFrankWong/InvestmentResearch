@@ -4,16 +4,15 @@ __author__ = 'Bruce Frank Wong'
 
 
 from peewee import (
-    Model,
     AutoField,
     CharField,
     FixedCharField,
 )
 
-from .. import db
+from .base import BasicModel
 
 
-class Country(Model):
+class Country(BasicModel):
     """
     Country.
     """
@@ -25,10 +24,6 @@ class Country(Model):
     alpha2 = FixedCharField(verbose_name='代码，2字母', max_length=2, unique=True)
     alpha3 = FixedCharField(verbose_name='代码，3字母', max_length=3, unique=True)
     numeric = FixedCharField(verbose_name='代码，3数字', max_length=3, unique=True)
-
-    class Meta:
-        database = db
-        table_name = 'country'
 
     def __repr__(self):
         return f'<Country(' \

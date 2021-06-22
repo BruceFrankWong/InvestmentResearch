@@ -4,17 +4,16 @@ __author__ = 'Bruce Frank Wong'
 
 
 from peewee import (
-    Model,
     AutoField,
     CharField,
     ForeignKeyField,
 )
 
-from .. import db
+from .base import BasicModel
 from .country import Country
 
 
-class Exchange(Model):
+class Exchange(BasicModel):
     """
     Exchange.
     """
@@ -26,8 +25,9 @@ class Exchange(Model):
     country = ForeignKeyField(Country, backref='exchange_list')
 
     class Meta:
-        database = db
-        table_name = 'exchange'
+        depends_on = [
+            Country,
+        ]
 
     def __repr__(self):
         return f'<Exchange(' \

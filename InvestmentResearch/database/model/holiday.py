@@ -4,7 +4,6 @@ __author__ = 'Bruce Frank Wong'
 
 
 from peewee import (
-    Model,
     AutoField,
     CharField,
     FixedCharField,
@@ -12,11 +11,11 @@ from peewee import (
     ForeignKeyField,
 )
 
-from .. import db
+from .base import BasicModel
 from .country import Country
 
 
-class Holiday(Model):
+class Holiday(BasicModel):
     """
     Holiday.
     """
@@ -28,8 +27,9 @@ class Holiday(Model):
     country = ForeignKeyField(Country, backref='holiday_list')
 
     class Meta:
-        database = db
-        table_name = 'holiday'
+        depends_on = [
+            Country,
+        ]
 
     def __repr__(self):
         return f'<Holiday(' \
