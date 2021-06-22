@@ -136,3 +136,6 @@ dmypy.json
 *.sqlite
 *.sqlite-shm
 *.sqlite-wal
+
+# Project temporary files
+temp/
