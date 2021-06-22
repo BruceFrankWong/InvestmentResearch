@@ -50,6 +50,24 @@ class FuturesProduct(BasicModel):
                f')>'
 
 
+class FuturesContractSpecification(BasicModel):
+    """
+    Futures contract specification.
+    """
+    id = AutoField(primary_key=True)
+    product = ForeignKeyField(FuturesProduct, backref='contract_list', on_delete='CASCADE')
+    symbol = FixedCharField(verbose_name='代码', max_length=4)
+    enable_date = DateField(verbose_name='上市日期')
+    multiplier = IntegerField(verbose_name='乘数')
+    delivery_date_begin = DateField(verbose_name='交割开始日期')
+    delivery_date_end = DateField(verbose_name='交割结束日期')
+
+    class Meta:
+        depends_on = [
+            FuturesProduct,
+        ]
+
+
 class FuturesContract(BasicModel):
     """
     Futures contract.
