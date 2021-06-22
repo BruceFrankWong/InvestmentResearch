@@ -21,25 +21,37 @@ def test_product():
     # Create models but not commit into database with simulation data.
     product_data_list: List[Dict[str, Any]] = [
         {
+            'exchange': 'SHFE',
             'symbol': 'HC',
             'name_zh': '热轧卷板',
             'name_en': 'Hot rolled coils',
-            'exchange': 'SHFE'
+            'listing_date': dt.date.fromisoformat('2014-03-21'),
+            'initial_contract': '1407;1408;1409;1410;1411;1412;1501;1502;1503',
+            'announced_date': dt.date.fromisoformat('2014-03-17'),
+            'announcement_url': 'http://www.shfe.com.cn/news/notice/911319760.html',
         },
         {
+            'exchange': 'SHFE',
             'symbol': 'RB',
             'name_zh': '螺纹钢',
             'name_en': 'Steel Rebar',
-            'exchange': 'SHFE'
+            'listing_date': dt.date.fromisoformat('2009-03-27'),
+            'initial_contract': '0909;0910;0911;0912;1001;1002;1003',
+            'announced_date': dt.date.fromisoformat('2014-03-23'),
+            'announcement_url': 'http://www.shfe.com.cn/news/notice/92235792.html',
         },
     ]
 
     product_list: List[FuturesProduct] = [
         FuturesProduct(
+            exchange=Exchange.get(Exchange.symbol == data['exchange']),
             symbol=data['symbol'],
             name_zh=data['name_zh'],
             name_en=data['name_en'],
-            exchange=Exchange.get(Exchange.symbol == data['exchange'])
+            listing_date=data['listing_date'],
+            initial_contract=data['initial_contract'],
+            announced_date=data['announced_date'],
+            announcement_url=data['announcement_url']
         ) for data in product_data_list
     ]
 

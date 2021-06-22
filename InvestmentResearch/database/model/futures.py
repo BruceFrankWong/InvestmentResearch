@@ -4,35 +4,39 @@ __author__ = 'Bruce Frank Wong'
 
 
 from peewee import (
-    Model,
     AutoField,
     CharField,
     FixedCharField,
     DateField,
+    TimeField,
     BooleanField,
     IntegerField,
+    FloatField,
     ForeignKeyField,
 )
 
-from .. import db
+from .base import BasicModel
 from .exchange import Exchange
 
 
-class FuturesProduct(Model):
+class FuturesProduct(BasicModel):
     """
     Futures product.
     """
     id = AutoField(primary_key=True)
+    exchange = ForeignKeyField(Exchange, backref='futures_list', on_delete='CASCADE')
     symbol = FixedCharField(verbose_name='品种代码', max_length=2, unique=True)
     name_zh = CharField(verbose_name='品种中文名称')
-    name_en = CharField(verbose_name='品种英文名称')
-    # section = IntegerField(verbose_name='交易节数量')
-    # optional_section = IntegerField(verbose_name='可选交易节序号')
-    exchange = ForeignKeyField(Exchange, backref='futures_list', on_delete='CASCADE')
+    name_en = CharField(verbose_name='品种英文名称', null=True)
+    listing_date = DateField(verbose_name='上市日期', null=True)
+    initial_contract = CharField(verbose_name='首批上市合约', null=True)
+    announced_date = DateField(verbose_name='公告日期', null=True)
+    announcement_url = CharField(verbose_name='公告URL', null=True)
 
     class Meta:
-        database = db
-        table_name = 'futures_product'
+        depends_on = [
+            Exchange,
+        ]
 
     def __repr__(self):
         return f'<Futures(' \
@@ -46,7 +50,7 @@ class FuturesProduct(Model):
                f')>'
 
 
-class FuturesContract(Model):
+class FuturesContract(BasicModel):
     """
     Futures contract.
     """
@@ -59,11 +63,12 @@ class FuturesContract(Model):
     delivery_date_end = DateField(verbose_name='交割结束日期')
 
     class Meta:
-        database = db
-        table_name = 'futures_contract'
+        depends_on = [
+            FuturesProduct,
+        ]
 
 
-class FuturesTransactionRule(Model):
+class FuturesTransactionRule(BasicModel):
     """
     交易细节。
     """
@@ -81,5 +86,52 @@ class FuturesTransactionRule(Model):
     transaction_fee = IntegerField(verbose_name='手续费')
 
     class Meta:
-        database = db
-        table_name = 'futures_transaction_rule'
+        depends_on = [
+            FuturesProduct,
+            FuturesContract,
+        ]
+
+
+class FuturesQuotationBase(BasicModel):
+    """
+    Quotation of futures.
+    """
+    id = AutoField(primary_key=True)
+    product = ForeignKeyField(FuturesProduct, verbose_name='品种id', backref='transaction_list')
+    contract = ForeignKeyField(FuturesContract, verbose_name='合约id', backref='transaction_list')
+    price_open = FloatField(verbose_name='开盘价')
+    price_high = FloatField(verbose_name='最高价')
+    price_low = FloatField(verbose_name='最低价')
+    price_close = FloatField(verbose_name='收盘价')
+    price_settlement = FloatField(verbose_name='结算价')
+    volume = IntegerField(verbose_name='成交量')
+    open_interest = IntegerField(verbose_name='持仓量')
+
+    class Meta:
+        depends_on = [
+            FuturesProduct,
+            FuturesContract,
+        ]
+
+
+class FuturesQuotation1Minutely(FuturesQuotationBase):
+    """
+    Quotation of futures, 1 minutely.
+    """
+    date = DateField(verbose_name='日期')
+    time = TimeField(verbose_name='时间')
+
+
+class FuturesQuotation3Minutely(FuturesQuotationBase):
+    """
+    Quotation of futures, 3 minutely.
+    """
+    date = DateField(verbose_name='日期')
+    time = TimeField(verbose_name='时间')
+
+
+class FuturesQuotationDaily(FuturesQuotationBase):
+    """
+    Quotation of futures, daily.
+    """
+    date = DateField(verbose_name='日期')
