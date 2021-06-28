@@ -19,7 +19,7 @@ class StockType(Enum):
     Terminated = 5      # 终止上市
 
 
-def get_listed_stock_from_sse():
+def get_stock_info_from_sse(stock_type: StockType):
     header: Dict[str, str] = {
         'Accept': 'text/html,'
                   'application/xhtml+xml,'
@@ -36,7 +36,6 @@ def get_listed_stock_from_sse():
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
                       'AppleWebKit/537.36 (KHTML, like Gecko) '
                       'Chrome/91.0.4472.114 Safari/537.36',
-        # 'refHost': 'query.sse.com.cn',
         'Referer': 'http://www.sse.com.cn/',
     }
 
@@ -45,9 +44,8 @@ def get_listed_stock_from_sse():
                '&csrcCode=&areaName=&stockType={stock_type}&pageHelp.cacheSize=1&pageHelp.beginPage=1' \
                '&pageHelp.pageSize=100&pageHelp.pageNo=1&_=1624790621466'
     content: str
-    stock_type: StockType = StockType.Listing
     session = requests.Session()
-    response = session.get(url.format(stock_type=1), headers=header)
+    response = session.get(url.format(stock_type=stock_type), headers=header)
 
     if response.status_code == 200:
         if 'Set-Cookie' not in response.headers.keys():
@@ -65,4 +63,4 @@ def get_listed_stock_from_sse():
 
 
 if __name__ == '__main__':
-    get_listed_stock_from_sse()
+    get_stock_info_from_sse(StockType.ListedOnMainBoardA)
