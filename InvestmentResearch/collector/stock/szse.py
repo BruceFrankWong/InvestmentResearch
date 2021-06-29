@@ -10,16 +10,7 @@ import json
 import requests
 
 
-class StockType(Enum):
-    ListedOnMainBoardA = 1      # 已上市，主板A股
-    ListedOnMainBoardB = 2      # 已上市，主板B股
-    ListedOnStarBoardB = 8      # 已上市，科创板
-    Listing = 3         # 待上市
-    Paused = 4          # 暂停上市
-    Terminated = 5      # 终止上市
-
-
-def get_stock_info_from_sse(stock_type: StockType):
+def get_stock_info_from_szse():
     header: Dict[str, str] = {
         'Accept': 'text/html,'
                   'application/xhtml+xml,'
@@ -36,30 +27,29 @@ def get_stock_info_from_sse(stock_type: StockType):
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
                       'AppleWebKit/537.36 (KHTML, like Gecko) '
                       'Chrome/91.0.4472.114 Safari/537.36',
-        'Referer': 'http://www.sse.com.cn/',
+        'Host': 'www.szse.cn',
+        'Referer': 'http://www.szse.cn/market/product/stock/list/index.html',
     }
 
-    url: str = 'http://query.sse.com.cn/security/stock/getStockListData2.do' \
-               '?&jsonCallBack=jsonpCallback97956&isPagination=false&stockCode=' \
-               '&csrcCode=&areaName=&stockType={stock_type}&pageHelp.cacheSize=1&pageHelp.beginPage=1' \
-               '&pageHelp.pageSize=100&pageHelp.pageNo=1&_=1624790621466'
+    url: str = 'http://www.szse.cn/api/report/ShowReport/data' \
+               '?SHOWTYPE=JSON&CATALOGID=1110&TABKEY=tab1&PAGENO=1&random=0.43792128180408896'
     content: str
     session = requests.Session()
-    response = session.get(url.format(stock_type=stock_type), headers=header)
+    response = session.get(url, headers=header)
 
     if response.status_code == 200:
-        print('OK, 2')
+        print('OK')
         response.encoding = 'utf-8'
         content = response.text
         print(content)
-        result = json.loads(content[19:-1])
+        result = json.loads(content)
         print(type(result))
         print(result)
-        for k, v in result.items():
-            print(k, ': ', v)
-        for item in result['result']:
+        # for k, v in result.items():
+        #     print(k, ': ', v)
+        for item in result:
             print(item)
 
 
 if __name__ == '__main__':
-    get_stock_info_from_sse(StockType.ListedOnMainBoardA)
+    get_stock_info_from_szse()
