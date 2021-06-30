@@ -43,6 +43,25 @@ CONFIGS: Dict[str, Any] = {
         'picture_path': 'picture',
     },
 
+    # HTTP Header
+    'http_header': {
+        'Accept': 'text/html,'
+                  'application/xhtml+xml,'
+                  'application/xml;q=0.9,'
+                  'image/avif,'
+                  'image/webp,'
+                  'image/apng,'
+                  '*/*;q=0.8,'
+                  'application/signed-exchange;v=b3;q=0.9',
+        'Accept-Encoding': 'gzip, deflate',
+        'Accept-Language': 'zh-CN,zh;q=0.9,zh-TW;q=0.8',
+        'Cache-Control': 'max-age=0',
+        'Connection': 'keep-alive',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
+                      'AppleWebKit/537.36 (KHTML, like Gecko) '
+                      'Chrome/91.0.4472.114 Safari/537.36',
+    },
+
     # 外部软件
     'tdx': r'C:\\new_tdx',
 }
