@@ -3,14 +3,14 @@
 __author__ = 'Bruce Frank Wong'
 
 
-from typing import Dict, List
+from typing import Any, Dict, List
 from enum import Enum
 import json
 
 import requests
 
 from ...utility import CONFIGS
-from ...database.model import Stock
+from ...database.model import Stock, Exchange
 
 
 class StockType(Enum):
@@ -24,6 +24,7 @@ class StockType(Enum):
 
 def get_stock_info_from_sse(stock_type: StockType) -> List[Stock]:
     result: List[Stock] = []
+    temp: List[Dict[str, Any]] = []
 
     http_header: Dict[str, str] = CONFIGS['http_header']
     http_header['Referer'] = 'http://www.sse.com.cn/'
@@ -51,7 +52,15 @@ def get_stock_info_from_sse(stock_type: StockType) -> List[Stock]:
         print(data)
         # for k, v in result.items():
         #     print(k, ': ', v)
-        for item in data['result']:
+        for item in data['pageHelp']['data']:
+            temp.append(
+                {
+                    'exchange': Exchange.get(Exchange.symbol == 'SSE'),
+                    'symbol': item['SECURITY_CODE_A'],
+                    'name': item['SECURITY_ABBR_A'],
+                    'listing_date': item['LISTING_DATE'],
+                }
+            )
             print(item)
     else:
         print('Error')
@@ -64,4 +73,6 @@ def get_stock_info_from_sse(stock_type: StockType) -> List[Stock]:
         print('Response text:')
         print(response.text)
 
+    for item in temp:
+        print(item)
     return result
