@@ -3,7 +3,7 @@
 __author__ = 'Bruce Frank Wong'
 
 
-from typing import Any, Dict, List, Tuple, Optional
+from typing import Any, Dict, List, Optional
 from enum import Enum
 import json
 import datetime as dt
