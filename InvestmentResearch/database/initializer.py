@@ -15,6 +15,8 @@ from .model import (
     Country,
     Holiday,
     Exchange,
+    StockStatus,
+    StockStatusEnum,
 )
 
 
@@ -92,8 +94,17 @@ def initialize_exchange():
         Exchange.bulk_create(model_list, batch_size=100)
 
 
+def initialize_stock_status():
+    model_list: List[StockStatus] = [StockStatus(status=x.value) for x in StockStatusEnum]
+
+    StockStatus.create_table()
+    with db.atomic():
+        StockStatus.bulk_create(model_list, batch_size=100)
+
+
 def initialize_all():
     create_model_tables()
     initialize_country()
     initialize_holiday()
     initialize_exchange()
+    initialize_stock_status()

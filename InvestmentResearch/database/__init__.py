@@ -14,6 +14,7 @@ from .initializer import (
     initialize_country,
     initialize_holiday,
     initialize_exchange,
+    initialize_stock_status,
     initialize_all,
 )
 
@@ -24,6 +25,7 @@ __all__ = [
     'initialize_country',
     'initialize_holiday',
     'initialize_exchange',
+    'initialize_stock_status',
     'initialize_all',
     'Country',
     'Holiday',

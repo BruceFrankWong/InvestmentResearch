@@ -3,6 +3,8 @@
 __author__ = 'Bruce Frank Wong'
 
 
+from enum import Enum
+
 from peewee import (
     AutoField,
     CharField,
@@ -19,10 +21,18 @@ from .base import BasicModel
 from .exchange import Exchange
 
 
+class StockStatusEnum(Enum):
+    IPO = 'IPO'                 # 初始募集
+    Listing = 'Listing'         # 挂牌交易
+    Suspended = 'Suspended'     # 停牌
+    Resumed = 'Resumed'         # 回复交易
+    Terminated = 'Terminated'   # 终止上市
+
+
 class StockStatus(BasicModel):
     """
     Status of stocks.
-    上市
+    股票状态。
     """
     id = AutoField(primary_key=True)
     status = FixedCharField(verbose_name='股票状态', max_length=6, unique=True)

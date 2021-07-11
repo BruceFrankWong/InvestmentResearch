@@ -67,3 +67,15 @@ def test_database_initialize_exchange():
     db.connect()
     initialize_exchange()
     db.close()
+
+
+@pytest.mark.run(order=7)
+def test_database_initialize_stock_status():
+    """
+    Test for initialize stock status.
+    """
+    from InvestmentResearch.database import db, initialize_stock_status
+
+    db.connect()
+    initialize_stock_status()
+    db.close()
