@@ -139,3 +139,6 @@ dmypy.json
 
 # Project temporary files
 temp/
+
+# Data downloaded
+data_downloaded/
