@@ -3,6 +3,8 @@
 __author__ = 'Bruce Frank Wong'
 
 
+import datetime as dt
+
 from peewee import (
     AutoField,
     CharField,
@@ -39,7 +41,7 @@ class FuturesProduct(BasicModel):
         ]
 
     def __repr__(self):
-        return f'<Futures(' \
+        return f'<FuturesProduct(' \
                f'symbol={self.symbol}, ' \
                f'name_zh={self.name_zh}, ' \
                f'name_en={self.name_en}, ' \
@@ -48,6 +50,9 @@ class FuturesProduct(BasicModel):
                f'alpha3={self.alpha3}, ' \
                f'numeric={self.numeric}' \
                f')>'
+
+    def __str__(self):
+        return f'<FuturesProduct(exchange={self.exchange.symbol}, symbol={self.symbol})>'
 
 
 class FuturesContractSpecification(BasicModel):
@@ -74,16 +79,24 @@ class FuturesContract(BasicModel):
     """
     id = AutoField(primary_key=True)
     product = ForeignKeyField(FuturesProduct, backref='contract_list', on_delete='CASCADE')
-    symbol = FixedCharField(verbose_name='代码', max_length=4)
-    listing_date = DateField(verbose_name='上市日期')
-    expiration_date = DateField(verbose_name='上市日期')
-    delivery_date_begin = DateField(verbose_name='交割开始日期')
-    delivery_date_end = DateField(verbose_name='交割结束日期')
+    delivery_month = FixedCharField(verbose_name='代码', max_length=4)
+    listing_date = DateField(verbose_name='上市日期', formats='YYYY-mm-dd', null=True)
+    expiration_date = DateField(verbose_name='交割日期', formats='YYYY-mm-dd', null=True)
+    delivery_date_begin = DateField(verbose_name='交割开始日期', formats='YYYY-mm-dd', null=True)
+    delivery_date_end = DateField(verbose_name='交割结束日期', formats='YYYY-mm-dd', null=True)
 
     class Meta:
         depends_on = [
             FuturesProduct,
         ]
+
+    def __str__(self):
+        x = self.expiration_date
+        # expiration_date: dt.date = dt.date.fromisoformat(self.expiration_date.year, )
+        return f'<FuturesContract(' \
+               f'product={self.product.symbol}, ' \
+               f'delivery={self.delivery_month}' \
+               f')>'
 
 
 class FuturesTransactionRule(BasicModel):
@@ -117,11 +130,11 @@ class FuturesQuotationBase(BasicModel):
     id = AutoField(primary_key=True)
     product = ForeignKeyField(FuturesProduct, verbose_name='品种id', backref='transaction_list')
     contract = ForeignKeyField(FuturesContract, verbose_name='合约id', backref='transaction_list')
-    price_open = FloatField(verbose_name='开盘价')
-    price_high = FloatField(verbose_name='最高价')
-    price_low = FloatField(verbose_name='最低价')
-    price_close = FloatField(verbose_name='收盘价')
-    price_settlement = FloatField(verbose_name='结算价')
+    open = FloatField(verbose_name='开盘价')
+    high = FloatField(verbose_name='最高价')
+    low = FloatField(verbose_name='最低价')
+    close = FloatField(verbose_name='收盘价')
+    settlement = FloatField(verbose_name='结算价')
     volume = IntegerField(verbose_name='成交量')
     open_interest = IntegerField(verbose_name='持仓量')
 
