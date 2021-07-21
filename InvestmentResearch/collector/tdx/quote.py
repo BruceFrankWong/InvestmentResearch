@@ -11,7 +11,7 @@ import struct
 import pandas as pd
 
 from ...utility import CONFIGS
-from .definition import TdxExchangeEnum, TdxPeriodEnum, ResultTypeEnum
+from .definition import TdxExchangeEnum, TdxPeriodEnum, TdxResultTypeEnum
 
 
 def _read_quote(exchange: TdxExchangeEnum, symbol: str, period: TdxPeriodEnum) -> bytes:
@@ -88,19 +88,19 @@ def read_quote(
         exchange: TdxExchangeEnum,
         symbol: str,
         period: TdxPeriodEnum,
-        result_type: ResultTypeEnum
+        result_type: TdxResultTypeEnum
 ) -> Generator:
 
     formatter: Callable
-    if result_type == ResultTypeEnum.Dataframe:
+    if result_type == TdxResultTypeEnum.Dataframe:
         columns: List[str] = ['date', 'open', 'high', 'low', 'close', 'amount', 'volume'] \
             if period == TdxPeriodEnum.Day else \
             ['date', 'time', 'open', 'high', 'low', 'close', 'amount', 'volume']
         return pd.DataFrame(
-            read_quote(exchange, symbol, period, ResultTypeEnum.Tuple),
+            read_quote(exchange, symbol, period, TdxResultTypeEnum.Tuple),
             columns=columns
         )
-    elif result_type == ResultTypeEnum.Tuple:
+    elif result_type == TdxResultTypeEnum.Tuple:
         if period == TdxPeriodEnum.Day:
             formatter = _tuple_formatter_for_daily
         else:
