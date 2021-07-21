@@ -60,7 +60,14 @@ class TdxPeriodEnum(Enum):
     }
 
 
-class ResultTypeEnum(Enum):
+class TdxResultTypeEnum(Enum):
     Dict = 'Dict'
     Tuple = 'Tuple'
     Dataframe = 'Dataframe'
+
+
+class TdxRecordTypeEnum(Enum):
+    Cash = 'Cash'       # 现金，对应通达信软件的【银证转帐】
+    Order = 'Order'     # 委托，对应通达信软件的【历史委托】
+    Trade = 'Trade'     # 成交，对应通达信软件的【历史成交】
+    Settle = 'Settle'   # 结算，对应通达信软件的【资金流水】
