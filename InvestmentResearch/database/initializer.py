@@ -23,16 +23,25 @@ from .model import (
 INITIAL_DATA_PATH: Path = PACKAGE_PATH.joinpath('data')
 
 
-def create_model_tables():
+def create_model_tables() -> None:
+    """
+    Create tables of models by order.
+    :return: None.
+    """
     model_list: List[Type[Model]] = [
-        Country,
-        Holiday,
-        Exchange,
+        Country,        # 国家
+        Holiday,        # 假日
+        Exchange,       # 交易所
+        StockStatus,    # 股票状态
     ]
     db.create_tables(model_list)
 
 
-def initialize_country():
+def initialize_country() -> None:
+    """
+    Initialize the Country model.
+    :return: None.
+    """
     csv_path: Path = INITIAL_DATA_PATH.joinpath('country.csv')
 
     with open(csv_path, mode='r', newline='', encoding='utf-8') as csv_file:
@@ -54,7 +63,11 @@ def initialize_country():
         Country.bulk_create(model_list, batch_size=100)
 
 
-def initialize_holiday():
+def initialize_holiday() -> None:
+    """
+    Initialize the Holiday model.
+    :return: None.
+    """
     csv_path: Path = INITIAL_DATA_PATH.joinpath('holiday.csv')
 
     with open(csv_path, mode='r', newline='', encoding='utf-8') as csv_file:
@@ -74,7 +87,11 @@ def initialize_holiday():
         Holiday.bulk_create(model_list, batch_size=100)
 
 
-def initialize_exchange():
+def initialize_exchange() -> None:
+    """
+    Initialize the Exchange model.
+    :return: None.
+    """
     csv_path: Path = INITIAL_DATA_PATH.joinpath('exchange.csv')
 
     with open(csv_path, mode='r', newline='', encoding='utf-8') as csv_file:
@@ -94,15 +111,23 @@ def initialize_exchange():
         Exchange.bulk_create(model_list, batch_size=100)
 
 
-def initialize_stock_status():
-    model_list: List[StockStatus] = [StockStatus(status=x.value) for x in StockStatusEnum]
+def initialize_stock_status() -> None:
+    """
+    Initialize the StockStatus model.
+    :return: None.
+    """
+    model_list: List[StockStatus] = [StockStatus(status=status.value) for status in StockStatusEnum]
 
     StockStatus.create_table()
     with db.atomic():
         StockStatus.bulk_create(model_list, batch_size=100)
 
 
-def initialize_all():
+def initialize_all() -> None:
+    """
+    Initialize all the models.
+    :return: None.
+    """
     create_model_tables()
     initialize_country()
     initialize_holiday()

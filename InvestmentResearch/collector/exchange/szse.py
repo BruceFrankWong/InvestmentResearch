@@ -14,10 +14,14 @@ from ...utility import CONFIGS
 from ..utility import normalize_stock_name
 
 
+# Define Dict[str, Any] named as StockData.
 StockData = Dict[str, Any]
 
 
 class InfoTypeSZSE(Enum):
+    """
+    The SZSE info type.
+    """
     StockListedOnA = {'catalog_id': '1110', 'tab_key': 1}       # A股
     StockListedOnB = {'catalog_id': '1110', 'tab_key': 2}       # B股
     StockListedCDR = {'catalog_id': '1110', 'tab_key': 3}       # CDR, Chinese Depository Receipt, 中国存托凭证
@@ -27,6 +31,9 @@ class InfoTypeSZSE(Enum):
 
 
 class CatalogId(Enum):
+    """
+    The SZSE catalog id.
+    """
     StockListed = '1110'
     StockTerminated = '1793_ssgs'
 
@@ -61,6 +68,13 @@ def crawl(stock_type: InfoTypeSZSE, page: int = 1) -> Optional[str]:
 
 
 def get_stock_info_from_szse(stock_type: InfoTypeSZSE) -> List[StockData]:
+    """
+    Crawl stock info from SZSE.
+
+    :param stock_type: InfoTypeSZSE.
+
+    :return: List[StockData].
+    """
     stock_data_list: List[StockData] = []
 
     result: str
@@ -158,6 +172,11 @@ def get_stock_info_from_szse(stock_type: InfoTypeSZSE) -> List[StockData]:
 
 
 def get_all_stock_info_from_szse() -> List[StockData]:
+    """
+    Crawl info of all stock from SZSE.
+
+    :return: List[StockData].
+    """
     stock_type_list: List[InfoTypeSZSE] = [
         InfoTypeSZSE.StockListedOnA,        # A股
         InfoTypeSZSE.StockListedOnB,        # B股
