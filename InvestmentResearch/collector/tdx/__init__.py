@@ -6,12 +6,16 @@ __author__ = 'Bruce Frank Wong'
 from .definition import (
     TdxExchangeEnum,
     TdxPeriodEnum,
-    TdxResultTypeEnum,
+    TdxQuoteTypeEnum,
     TdxRecordTypeEnum,
 )
+
 from .quote import (
-    read_quote
+    show_quote,
+    read_quote,
 )
+
 from .record import (
+    show_record,
     read_record,
 )

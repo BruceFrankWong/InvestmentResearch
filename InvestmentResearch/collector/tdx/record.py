@@ -8,7 +8,7 @@ from pathlib import Path
 import csv
 import datetime as dt
 
-from . import TdxRecordTypeEnum
+from .definition import TdxRecordTypeEnum
 
 
 def show_record(record_file: Path) -> None:

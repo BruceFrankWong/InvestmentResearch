@@ -11,7 +11,7 @@ import struct
 import pandas as pd
 
 from ...utility import CONFIGS
-from .definition import TdxExchangeEnum, TdxPeriodEnum, TdxResultTypeEnum
+from .definition import TdxExchangeEnum, TdxPeriodEnum, TdxQuoteTypeEnum
 
 
 def _read_quote(exchange: TdxExchangeEnum, symbol: str, period: TdxPeriodEnum) -> bytes:
@@ -88,19 +88,19 @@ def read_quote(
         exchange: TdxExchangeEnum,
         symbol: str,
         period: TdxPeriodEnum,
-        result_type: TdxResultTypeEnum
+        result_type: TdxQuoteTypeEnum
 ) -> Generator:
 
     formatter: Callable
-    if result_type == TdxResultTypeEnum.Dataframe:
+    if result_type == TdxQuoteTypeEnum.Dataframe:
         columns: List[str] = ['date', 'open', 'high', 'low', 'close', 'amount', 'volume'] \
             if period == TdxPeriodEnum.Day else \
             ['date', 'time', 'open', 'high', 'low', 'close', 'amount', 'volume']
         return pd.DataFrame(
-            read_quote(exchange, symbol, period, TdxResultTypeEnum.Tuple),
+            read_quote(exchange, symbol, period, TdxQuoteTypeEnum.Tuple),
             columns=columns
         )
-    elif result_type == TdxResultTypeEnum.Tuple:
+    elif result_type == TdxQuoteTypeEnum.Tuple:
         if period == TdxPeriodEnum.Day:
             formatter = _tuple_formatter_for_daily
         else:
@@ -121,3 +121,80 @@ def read_quote(
     raw: bytes = _read_quote(exchange, symbol, period)
     for offset in range(0, len(raw), pattern.size):
         yield formatter(pattern.unpack_from(raw, offset))
+
+
+def show_quote(
+    exchange: TdxExchangeEnum,
+    symbol: str,
+    period: TdxPeriodEnum,
+    result_type: TdxQuoteTypeEnum
+) -> None:
+    result = read_quote(
+        exchange=exchange,
+        symbol=symbol,
+        period=period,
+        result_type=result_type
+    )
+
+    pattern_daily: str = '{date}, ' \
+                         'open: {open:.2f}, high: {high:.2f}, low: {low:.2f}, close: {close:.2f}, ' \
+                         'amount: {amount:.2f}, volume: {volume}'
+    pattern_minutely: str = '{date}, {time}' \
+                            'open: {open:.2f}, high: {high:.2f}, low: {low:.2f}, close: {close:.2f}, ' \
+                            'amount: {amount:.2f}, volume: {volume}'
+    if result_type == TdxQuoteTypeEnum.Dict:
+        if period == TdxPeriodEnum.Day:
+            for item in result:
+                print(
+                    pattern_daily.format(
+                        date=item['date'].isoformat(),
+                        open=item['open'],
+                        high=item['high'],
+                        low=item['low'],
+                        close=item['close'],
+                        amount=item['amount'],
+                        volume=item['volume'],
+                    )
+                )
+        else:
+            for item in result:
+                print(
+                    pattern_minutely.format(
+                        date=item['date'].isoformat(),
+                        time=item['time'].isoformat(),
+                        open=item['open'],
+                        high=item['high'],
+                        low=item['low'],
+                        close=item['close'],
+                        amount=item['amount'],
+                        volume=item['volume'],
+                    )
+                )
+    elif result_type == TdxQuoteTypeEnum.Tuple:
+        if period == TdxPeriodEnum.Day:
+            for item in result:
+                print(
+                    pattern_daily.format(
+                        date=item[0].isoformat(),
+                        open=item[1],
+                        high=item[2],
+                        low=item[3],
+                        close=item[4],
+                        amount=item[5],
+                        volume=item[6],
+                    )
+                )
+        else:
+            for item in result:
+                print(
+                    pattern_minutely.format(
+                        date=item[0].isoformat(),
+                        time=item[1].isoformat(),
+                        open=item[2],
+                        high=item[3],
+                        low=item[4],
+                        close=item[5],
+                        amount=item[6],
+                        volume=item[7],
+                    )
+                )
