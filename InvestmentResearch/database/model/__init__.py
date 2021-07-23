@@ -10,6 +10,7 @@ from .stock import (
     StockStatusEnum,
     StockStatus,
     Stock,
+    Announcement,
 )
 from .futures import (
     FuturesProduct,
@@ -26,6 +27,7 @@ __all__ = [
     'StockStatusEnum',
     'StockStatus',
     'Stock',
+    'Announcement',
     'FuturesProduct',
     'FuturesContractSpecification',
     'FuturesContract',

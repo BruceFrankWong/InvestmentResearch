@@ -17,6 +17,8 @@ from .model import (
     Exchange,
     StockStatus,
     StockStatusEnum,
+    Announcement,
+    Stock,
 )
 
 
@@ -33,6 +35,7 @@ def create_model_tables() -> None:
         Holiday,        # 假日
         Exchange,       # 交易所
         StockStatus,    # 股票状态
+        Announcement,     # 披露
     ]
     db.create_tables(model_list)
 

@@ -75,13 +75,20 @@ class Stock(BasicModel):
                f')>'
 
 
-class Disclosure(BasicModel):
+class Announcement(BasicModel):
     """
-    Model for disclosure published by listed company.
+    Model for announcement published by listed company.
     """
     id = AutoField(primary_key=True)
     symbol = ForeignKeyField(Stock, backref='disclosure_list', on_delete='CASCADE')
-    date = DateField(verbose_name='信息披露日期')
-    title = CharField(verbose_name='标题')
-    content = CharField(verbose_name='内容')
-    url = CharField(verbose_name='网址')
+    date = DateField(verbose_name='披露日期')
+    title = CharField(verbose_name='公告标题')
+    content = CharField(verbose_name='公告内容', null=True)
+    url = CharField(verbose_name='公告网址')
+
+    def __repr__(self):
+        return f'<Announcement(' \
+               f'symbol={self.symbol}, ' \
+               f'date={self.date}, ' \
+               f'title={self.title}, ' \
+               f')>'
