@@ -8,6 +8,9 @@ from .model import (
     Country,
     Holiday,
     Exchange,
+    Stock,
+    StockStatus,
+    StockStatusEnum,
 )
 from .initializer import (
     create_model_tables,
@@ -30,4 +33,7 @@ __all__ = [
     'Country',
     'Holiday',
     'Exchange',
+    'Stock',
+    'StockStatus',
+    'StockStatusEnum',
 ]
