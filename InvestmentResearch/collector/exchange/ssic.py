@@ -10,9 +10,11 @@ __author__ = 'Bruce Frank Wong'
 
 
 __all__ = [
-    'SSICResultFormatEnum',
     'ResultOfSSIC',
+    'SSICResultFormatEnum',
+    'SSICIndustryClassificationEnum',
     'get_trading_calendar',
+    'get_industry',
 ]
 
 
@@ -86,6 +88,17 @@ class SSICResultFormatEnum(Enum):
     DBF = 'dbf'
 
 
+class SSICIndustryClassificationEnum(Enum):
+    CSRC = '008001'     # 证监会行业分类标准
+    SSIC = '008002'     # 巨潮行业分类标准
+    SWS = '008003'      # 申银万国行业分类标准
+    XCF = '008004'      # 新财富行业分类标准
+    SASAC = '008005'    # 国资委行业分类标准
+    SSIC_DETAIL = '008006'  # 巨潮产业细分标准
+    TX = '008007'       # 天相行业分类标准
+    GICS = '008008'     # 全球行业分类标准（GICS）
+
+
 def get_ssic_token() -> str:
     """
     Get token from SSIC.
@@ -100,6 +113,13 @@ def get_ssic_token() -> str:
     response = requests.post(url, data=post_data)
     token_dict = json.loads(response.text)
     return token_dict['access_token']
+
+
+def _str2date(value: str) -> Optional[dt.date]:
+    if value is None:
+        return None
+    else:
+        return dt.date.fromisoformat(value)
 
 
 def get_trading_calendar(
@@ -143,9 +163,9 @@ def get_trading_calendar(
     for i in range(raw['count']):
         result.append(
             {
-                'date': dt.date.fromisoformat(raw['records'][i]['F001D']),                  # 日期
-                'previous_trading_day': dt.date.fromisoformat(raw['records'][i]['F011D']),  # 前一交易日
-                'next_trading_day': dt.date.fromisoformat(raw['records'][i]['F012D']),      # 后一交易日
+                'date': _str2date(raw['records'][i]['F001D']),                  # 日期
+                'previous_trading_day': _str2date(raw['records'][i]['F011D']),  # 前一交易日
+                'next_trading_day': _str2date(raw['records'][i]['F012D']),      # 后一交易日
                 'is_week_beginning': True if raw['records'][i]['F002C'] == '1' else False,          # 是否周初
                 'is_week_end': True if raw['records'][i]['F003C'] == '1' else False,                # 是否周末
                 'is_month_beginning': True if raw['records'][i]['F004C'] == '1' else False,         # 是否月初
@@ -158,6 +178,38 @@ def get_trading_calendar(
                 'is_hkex_trading_day': True if raw['records'][i]['F013C'] == '1' else False,        # 是否港交所交易日
                 'is_ah_trading_day': True if raw['records'][i]['F014C'] == '1' else False,          # 港股通交易日
                 'is_ha_trading_day': True if raw['records'][i]['F015C'] == '1' else False           # 陆股通交易日
+            }
+        )
+    return result
+
+
+def get_industry(
+    industry_type: SSICIndustryClassificationEnum
+) -> ResultOfSSIC:
+    category: str = 'stock'
+    interface: str = 'p_public0002'
+
+    url: str = SSIC_URL.format(
+        category=category,
+        interface=interface,
+        token=get_ssic_token()
+    )
+    url = ''.join([url, '&indtype=', industry_type.value])
+
+    response = requests.get(url)
+    raw: Dict[str, Any] = json.loads(response.content)
+
+    result: ResultOfSSIC = ResultOfSSIC(total=raw['total'], count=raw['count'])
+    for i in range(raw['count']):
+        result.append(
+            {
+                'parent': raw['records'][i]['PARENTCODE'],         # 父类编码
+                'code': raw['records'][i]['SORTCODE'],             # 类目编码
+                'name': raw['records'][i]['SORTNAME'],             # 类目名称
+                'name_en': raw['records'][i]['F001V'],             # 类目名称（英文）
+                'expiration_date': raw['records'][i]['F002D'],     # 终止日期
+                'industry_type_code': raw['records'][i]['F003V'],  # 行业类型编码
+                'industry_type': raw['records'][i]['F004V']        # 行业类型
             }
         )
     return result

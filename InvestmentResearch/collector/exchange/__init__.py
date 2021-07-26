@@ -14,9 +14,11 @@ from .szse import (
 )
 
 from .ssic import (
-    SSICResultFormatEnum,
     ResultOfSSIC,
+    SSICResultFormatEnum,
+    SSICIndustryClassificationEnum,
     get_trading_calendar,
+    get_industry,
 )
 
 
@@ -25,7 +27,9 @@ __all__ = [
     'get_all_stock_info_from_sse',
     'get_stock_info_from_szse',
     'get_all_stock_info_from_szse',
-    'SSICResultFormatEnum',
     'ResultOfSSIC',
+    'SSICResultFormatEnum',
+    'SSICIndustryClassificationEnum',
     'get_trading_calendar',
+    'get_industry',
 ]
