@@ -24,6 +24,9 @@ from .ssic import (
 from .shfe import (
     crawl_notice_from_shfe,
 )
+from .dce import (
+    crawl_notice_from_dce,
+)
 
 
 __all__ = [
@@ -37,4 +40,5 @@ __all__ = [
     'get_trading_calendar',
     'get_industry',
     'crawl_notice_from_shfe',
+    'crawl_notice_from_dce',
 ]
