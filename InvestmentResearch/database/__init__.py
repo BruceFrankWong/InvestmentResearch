@@ -37,3 +37,6 @@ __all__ = [
     'StockStatus',
     'StockStatusEnum',
 ]
+
+
+initialize_all()

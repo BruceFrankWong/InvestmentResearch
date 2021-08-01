@@ -45,8 +45,9 @@ def initialize_country() -> None:
     Initialize the Country model.
     :return: None.
     """
-    csv_path: Path = INITIAL_DATA_PATH.joinpath('country.csv')
+    Country.create_table()
 
+    csv_path: Path = INITIAL_DATA_PATH.joinpath('country.csv')
     with open(csv_path, mode='r', newline='', encoding='utf-8') as csv_file:
         reader = csv.DictReader(csv_file)
         model_list = [
@@ -60,8 +61,7 @@ def initialize_country() -> None:
                 numeric=row['numeric']
             ) for row in reader
         ]
-    
-    Country.create_table()
+
     with db.atomic():
         Country.bulk_create(model_list, batch_size=100)
 
@@ -126,13 +126,14 @@ def initialize_stock_status() -> None:
         StockStatus.bulk_create(model_list, batch_size=100)
 
 
-def initialize_all() -> None:
+def initialize_all(normal_mode: bool = False) -> None:
     """
     Initialize all the models.
     :return: None.
     """
-    create_model_tables()
-    initialize_country()
-    initialize_holiday()
-    initialize_exchange()
-    initialize_stock_status()
+    if normal_mode:
+        create_model_tables()
+        initialize_country()
+        initialize_holiday()
+        initialize_exchange()
+        initialize_stock_status()
