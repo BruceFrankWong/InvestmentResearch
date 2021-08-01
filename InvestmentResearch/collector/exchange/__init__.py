@@ -21,6 +21,10 @@ from .ssic import (
     get_industry,
 )
 
+from .shfe import (
+    crawl_notice_from_shfe,
+)
+
 
 __all__ = [
     'get_stock_info_from_sse',
@@ -32,4 +36,5 @@ __all__ = [
     'SSICIndustryClassificationEnum',
     'get_trading_calendar',
     'get_industry',
+    'crawl_notice_from_shfe',
 ]
