@@ -6,6 +6,7 @@ __author__ = 'Bruce Frank Wong'
 from peewee import (
     AutoField,
     CharField,
+    DateField,
     ForeignKeyField,
 )
 
@@ -36,4 +37,32 @@ class Exchange(BasicModel):
                f'fullname={self.fullname}, ' \
                f'url={self.url}, ' \
                f'country={self.country}' \
+               f')>'
+
+
+class Notice(BasicModel):
+    """
+    Notice from exchange.
+    """
+    id = AutoField()
+    exchange = ForeignKeyField(Exchange, backref='notice_list')
+    title = CharField(verbose_name='公告标题')
+    code = CharField(verbose_name='公告文号')
+    date = DateField(verbose_name='公告时间')
+    content = CharField(verbose_name='公告内容')
+    url = CharField(verbose_name='公告URL')
+
+    class Meta:
+        depends_on = [
+            Exchange,
+        ]
+
+    def __repr__(self):
+        return f'<Notice(' \
+               f'exchange={self.exchange.symbol}, ' \
+               f'title={self.title}, ' \
+               f'code={self.code}, ' \
+               f'date={self.date}, ' \
+               f'content={self.content}, ' \
+               f'url={self.url}' \
                f')>'
