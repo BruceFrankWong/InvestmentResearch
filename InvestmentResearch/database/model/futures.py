@@ -201,11 +201,22 @@ class CommoditySupplyDemandBalance(BasicModel):
                f')>'
 
 
-class SoybeanImports(BasicModel):
+class CommodityImportsAndExportsMonthly(BasicModel):
     """
-    Soybean import data, from the General Administration of Customs P.R.China.
+    Commodity import and exports data monthly, from the General Administration of Customs P.R.China.
     """
     id = AutoField(primary_key=True)
+    product = CharField(verbose_name='品种')
     year = IntegerField(verbose_name='年份')
     month = IntegerField(verbose_name='月份')
     imports = IntegerField(verbose_name='进口量')
+    exports = IntegerField(verbose_name='出口量')
+
+    def __repr__(self):
+        return f'<CommoditySupplyDemandBalance(' \
+               f'product={self.product}, ' \
+               f'year={self.is_estimate}, ' \
+               f'month={self.unit}, ' \
+               f'imports={self.inventory}, '\
+               f'exports={self.production}, ' \
+               f')>'
