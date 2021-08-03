@@ -17,6 +17,7 @@ from .futures import (
     FuturesContractSpecification,
     FuturesContract,
     FuturesTransactionRule,
+    CommoditySupplyDemandBalance,
 )
 
 
@@ -32,4 +33,5 @@ __all__ = [
     'FuturesContractSpecification',
     'FuturesContract',
     'FuturesTransactionRule',
+    'CommoditySupplyDemandBalance',
 ]

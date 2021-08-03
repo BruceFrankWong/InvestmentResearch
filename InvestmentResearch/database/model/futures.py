@@ -166,3 +166,46 @@ class FuturesQuotationDaily(FuturesQuotationBase):
     Quotation of futures, daily.
     """
     date = DateField(verbose_name='日期')
+
+
+class CommoditySupplyDemandBalance(BasicModel):
+    """
+    Supply-Demand Balance for commodity.
+    """
+    id = AutoField(primary_key=True)
+    product = CharField(verbose_name='品种')
+    is_estimate = BooleanField(verbose_name='是否预估')
+    unit = CharField(verbose_name='单位')
+    inventory = FloatField(verbose_name='期初库存')
+    production = FloatField(verbose_name='产量')
+    imports = FloatField(verbose_name='进口量')
+    total_supply = FloatField(verbose_name='总供给')
+    consumption = FloatField(verbose_name='消费量')
+    exports = FloatField(verbose_name='出口量')
+    total_demand = FloatField(verbose_name='总需求')
+    gap = FloatField(verbose_name='供需缺口')
+
+    def __repr__(self):
+        return f'<CommoditySupplyDemandBalance(' \
+               f'product={self.product}, ' \
+               f'is_estimate={self.is_estimate}, ' \
+               f'unit={self.unit}, ' \
+               f'inventory={self.inventory}, '\
+               f'production={self.production}, ' \
+               f'imports={self.imports}, ' \
+               f'total_supply={self.total_supply}, ' \
+               f'consumption={self.consumption}, ' \
+               f'exports={self.exports}, ' \
+               f'total_demand={self.total_demand}, ' \
+               f'gap={self.gap}' \
+               f')>'
+
+
+class SoybeanImports(BasicModel):
+    """
+    Soybean import data, from the General Administration of Customs P.R.China.
+    """
+    id = AutoField(primary_key=True)
+    year = IntegerField(verbose_name='年份')
+    month = IntegerField(verbose_name='月份')
+    imports = IntegerField(verbose_name='进口量')
