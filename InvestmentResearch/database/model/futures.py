@@ -123,51 +123,6 @@ class FuturesTransactionRule(BasicModel):
         ]
 
 
-class FuturesQuotationBase(BasicModel):
-    """
-    Quotation of futures.
-    """
-    id = AutoField(primary_key=True)
-    product = ForeignKeyField(FuturesProduct, verbose_name='品种id', backref='transaction_list')
-    contract = ForeignKeyField(FuturesContract, verbose_name='合约id', backref='transaction_list')
-    open = FloatField(verbose_name='开盘价')
-    high = FloatField(verbose_name='最高价')
-    low = FloatField(verbose_name='最低价')
-    close = FloatField(verbose_name='收盘价')
-    settlement = FloatField(verbose_name='结算价')
-    volume = IntegerField(verbose_name='成交量')
-    open_interest = IntegerField(verbose_name='持仓量')
-
-    class Meta:
-        depends_on = [
-            FuturesProduct,
-            FuturesContract,
-        ]
-
-
-class FuturesQuotation1Minutely(FuturesQuotationBase):
-    """
-    Quotation of futures, 1 minutely.
-    """
-    date = DateField(verbose_name='日期')
-    time = TimeField(verbose_name='时间')
-
-
-class FuturesQuotation3Minutely(FuturesQuotationBase):
-    """
-    Quotation of futures, 3 minutely.
-    """
-    date = DateField(verbose_name='日期')
-    time = TimeField(verbose_name='时间')
-
-
-class FuturesQuotationDaily(FuturesQuotationBase):
-    """
-    Quotation of futures, daily.
-    """
-    date = DateField(verbose_name='日期')
-
-
 class CommoditySupplyDemandBalance(BasicModel):
     """
     Supply-Demand Balance for commodity.
