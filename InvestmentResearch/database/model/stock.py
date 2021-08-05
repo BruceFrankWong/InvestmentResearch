@@ -41,7 +41,7 @@ class StockStatus(BasicModel):
     股票状态。
     """
     id = AutoField(primary_key=True)
-    status = FixedCharField(verbose_name='股票状态', max_length=6, unique=True)
+    status = FixedCharField(verbose_name='股票状态', max_length=10, unique=True)
 
     def __repr__(self):
         return f'<StockStatus(status={self.status})>'
@@ -59,8 +59,6 @@ class Stock(BasicModel):
     pinyin = FixedCharField(verbose_name='股票拼音', max_length=4, null=True)
     listing_date = DateField(verbose_name='上市日期', null=True)
     terminated_date = DateField(verbose_name='终止上市日期', null=True)
-    announced_date = DateField(verbose_name='公告日期', null=True)
-    announcement_url = CharField(verbose_name='公告URL', null=True)
 
     class Meta:
         depends_on = [
@@ -80,11 +78,16 @@ class Announcement(BasicModel):
     Model for announcement published by listed company.
     """
     id = AutoField(primary_key=True)
-    symbol = ForeignKeyField(Stock, backref='disclosure_list', on_delete='CASCADE')
+    symbol = ForeignKeyField(Stock, backref='announcement_list', on_delete='CASCADE')
     date = DateField(verbose_name='披露日期')
     title = CharField(verbose_name='公告标题')
     content = CharField(verbose_name='公告内容', null=True)
     url = CharField(verbose_name='公告网址')
+
+    class Meta:
+        depends_on = [
+            Stock,
+        ]
 
     def __repr__(self):
         return f'<Announcement(' \
