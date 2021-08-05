@@ -27,14 +27,19 @@ if not CONFIG_PATH.exists():
 
 # The default config.
 CONFIGS: Dict[str, Any] = {
+    # is debug mode
+    'DEBUG': False,
+
     # 数据库
     'database': {
-        'driver': 'sqlite',
-        'host': '',
-        'port': '',
-        'database': f'{PACKAGE_NAME}.sqlite',
-        'user': '',
-        'password': '',
+        'dev': {
+            'driver': 'sqlite',
+            'host': '',
+            'port': '',
+            'database': f'{PACKAGE_NAME}.sqlite',
+            'user': '',
+            'password': '',
+        },
     },
 
     # 路径

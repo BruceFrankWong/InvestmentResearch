@@ -3,7 +3,7 @@
 __author__ = 'Bruce Frank Wong'
 
 
-from typing import Callable, Dict
+from typing import Callable, Dict, Any
 
 from peewee import (
     Database,
@@ -38,6 +38,7 @@ def create_mysql_database(settings: Dict[str, str]) -> MySQLDatabase:
 
 
 def create_postgresql_database(settings: Dict[str, str]) -> PostgresqlDatabase:
+    print(settings['database'], settings['user'], settings['password'], settings['host'], settings['port'])
     return PostgresqlDatabase(
         settings['database'],
         user=settings['user'],
@@ -47,18 +48,20 @@ def create_postgresql_database(settings: Dict[str, str]) -> PostgresqlDatabase:
     )
 
 
-def create_database() -> Database:
+def create_database(config: Dict[str, Any]) -> Database:
     driver_mapper: Dict[str, Callable] = {
         'SQLITE': create_sqlite_database,
         'MYSQL': create_mysql_database,
         'POSTGRESQL': create_postgresql_database,
     }
 
-    driver: str = CONFIGS['database']['driver'].upper()
+    driver: str = config['driver'].upper()
 
     assert driver in driver_mapper.keys()
 
-    return driver_mapper[driver](CONFIGS['database'])
+    return driver_mapper[driver](config)
 
 
-db: Database = create_database()
+db: Database = create_database(CONFIGS['database']['dev']) \
+    if CONFIGS['DEBUG'] is True else \
+    create_database(CONFIGS['database']['product'])
