@@ -4,8 +4,11 @@ __author__ = 'Bruce Frank Wong'
 
 
 from .country import Country
-from .holiday import Holiday
-from .exchange import Exchange
+from .calendar import Holiday
+from .exchange import (
+    Exchange,
+    ExchangeNotice,
+)
 from .stock import (
     StockStatusEnum,
     StockStatus,
@@ -25,6 +28,7 @@ __all__ = [
     'Country',
     'Holiday',
     'Exchange',
+    'ExchangeNotice',
     'StockStatusEnum',
     'StockStatus',
     'Stock',

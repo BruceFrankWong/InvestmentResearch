@@ -13,23 +13,21 @@ from .model import (
     StockStatusEnum,
 )
 from .initializer import (
-    create_model_tables,
+    initialize_all,
     initialize_country,
     initialize_holiday,
     initialize_exchange,
     initialize_stock_status,
-    initialize_all,
 )
 
 
 __all__ = [
     'db',
-    'create_model_tables',
+    'initialize_all',
     'initialize_country',
     'initialize_holiday',
     'initialize_exchange',
     'initialize_stock_status',
-    'initialize_all',
     'Country',
     'Holiday',
     'Exchange',
@@ -39,4 +37,4 @@ __all__ = [
 ]
 
 
-initialize_all()
+# initialize_all()
