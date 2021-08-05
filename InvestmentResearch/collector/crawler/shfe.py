@@ -15,7 +15,7 @@ from lxml import etree
 
 from ...utility import CONFIGS, PACKAGE_PATH
 from ...database.model import Country, Holiday, Exchange, FuturesProduct, FuturesContract
-from ...database.model.futures import FuturesQuotationDaily
+from ...database.model.quote import FuturesQuoteDaily
 
 
 try:
@@ -103,7 +103,7 @@ def get_contract_from_shfe(day: Optional[Union[dt.date, List[dt.date]]] = None):
                 f'Basis price: {float(item["BASISPRICE"])}, '
             )
             # product, _ = FuturesProduct.get_or_create(
-            #     exchange=exchange_shfe,
+            #     crawler=exchange_shfe,
             #     symbol=item['INSTRUMENTID'][:2],
             #     delivery_month=item['INSTRUMENTID'][3:],
             #     defaults={
@@ -144,7 +144,7 @@ def get_futures_info_from_shfe(day: Optional[Union[dt.date, List[dt.date]]] = No
                 download_list.append(d)
     print(download_list)
 
-    result: List[FuturesQuotationDaily] = []
+    result: List[FuturesQuoteDaily] = []
 
     http_header: Dict[str, str] = CONFIGS['http_header']
     http_header['Referer'] = 'http://www.sse.com.cn/'

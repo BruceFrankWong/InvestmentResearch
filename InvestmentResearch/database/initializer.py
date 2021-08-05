@@ -9,12 +9,13 @@ import csv
 
 from peewee import Model
 
-from InvestmentResearch.utility import PACKAGE_PATH
+from InvestmentResearch.utility import PACKAGE_PATH, CONFIGS
 from .interface import db
 from .model import (
     Country,
     Holiday,
     Exchange,
+    ExchangeNotice,
     StockStatus,
     StockStatusEnum,
     Announcement,
@@ -23,21 +24,6 @@ from .model import (
 
 
 INITIAL_DATA_PATH: Path = PACKAGE_PATH.joinpath('data')
-
-
-def create_model_tables() -> None:
-    """
-    Create tables of models by order.
-    :return: None.
-    """
-    model_list: List[Type[Model]] = [
-        Country,        # 国家
-        Holiday,        # 假日
-        Exchange,       # 交易所
-        StockStatus,    # 股票状态
-        Announcement,     # 披露
-    ]
-    db.create_tables(model_list)
 
 
 def initialize_country() -> None:
@@ -114,6 +100,14 @@ def initialize_exchange() -> None:
         Exchange.bulk_create(model_list, batch_size=100)
 
 
+def initialize_exchange_notice() -> None:
+    """
+    Initialize the ExchangeNotice model.
+    :return:
+    """
+    ExchangeNotice.create_table()
+
+
 def initialize_stock_status() -> None:
     """
     Initialize the StockStatus model.
@@ -126,14 +120,44 @@ def initialize_stock_status() -> None:
         StockStatus.bulk_create(model_list, batch_size=100)
 
 
-def initialize_all(normal_mode: bool = False) -> None:
+def initialize_all(drop: bool = False) -> None:
     """
     Initialize all the models.
     :return: None.
     """
-    if normal_mode:
-        create_model_tables()
+    if CONFIGS['DEBUG'] is not True:
+        model_list: List[Type[Model]] = [
+            Country,            # 国家
+            Holiday,            # 假日
+            Exchange,           # 交易所
+            ExchangeNotice,     # 交易所公告
+            Stock,
+            StockStatus,        # 股票状态
+            Announcement,       # 披露
+        ]
+        if drop is True:
+            print('Dropping tables:')
+            for i in range(len(model_list), 0, -1):
+                print(f'\t{model_list[i-1]} ...')
+                model_list[i-1].drop_table()
+
+        print('Creating tables:')
+        for model in model_list:
+            model.create_table()
+            print(f'\t{model} ...')
+
+        print('Initializing tables:')
+        print('\t<Model: Country> ...')
         initialize_country()
+
+        print('\t<Model: Holiday> ...')
         initialize_holiday()
+
+        print('\t<Model: Exchange> ...')
         initialize_exchange()
+
+        print('\t<Model: ExchangeNotice> ...')
+        initialize_exchange_notice()
+
+        print('\t<Model: StockStatus> ...')
         initialize_stock_status()

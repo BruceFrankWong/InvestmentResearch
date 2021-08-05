@@ -5,6 +5,17 @@ __author__ = 'Bruce Frank Wong'
 
 from typing import List, Tuple
 
+import requests
+
+from InvestmentResearch.database.model.crawler import PageVisited
+
+
+def crawl(url: str) -> str:
+    response = requests.get(url)
+    if response.status_code == 200:
+        response.encoding = 'utf-8'
+        return response.text
+
 
 def normalize_stock_name(name: str) -> str:
     char_mapper_list: List[Tuple[str, str]] = [

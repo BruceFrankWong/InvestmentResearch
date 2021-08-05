@@ -11,7 +11,7 @@ import datetime as dt
 import requests
 
 from ...utility import CONFIGS
-from ..utility import normalize_stock_name
+from InvestmentResearch.collector.crawler.utility import normalize_stock_name
 
 
 StockData = Dict[str, Any]
@@ -68,7 +68,7 @@ def parse(data: Dict[str, Any]) -> List[StockData]:
             symbol = item['SECURITY_CODE_A']
             result.append(
                 {
-                    'exchange': exchange,
+                    'crawler': exchange,
                     'symbol': symbol,
                     'name': normalize_stock_name(item['SECURITY_ABBR_A']),
                     'market': '科创板' if symbol[:3] == '688' else '主板',
@@ -82,7 +82,7 @@ def parse(data: Dict[str, Any]) -> List[StockData]:
             symbol = item['SECURITY_CODE_B']
             result.append(
                 {
-                    'exchange': exchange,
+                    'crawler': exchange,
                     'symbol': symbol,
                     'name': normalize_stock_name(item['SECURITY_ABBR_B']),
                     'market': 'B股',

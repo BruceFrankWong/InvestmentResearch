@@ -11,7 +11,7 @@ import datetime as dt
 import requests
 
 from ...utility import CONFIGS
-from ..utility import normalize_stock_name
+from InvestmentResearch.collector.crawler.utility import normalize_stock_name
 
 
 # Define Dict[str, Any] named as StockData.
@@ -99,7 +99,7 @@ def get_stock_info_from_szse(stock_type: InfoTypeSZSE) -> List[StockData]:
                 if stock_type == InfoTypeSZSE.StockListedOnA:
                     stock_data_list.append(
                         {
-                            'exchange': 'SZSE',
+                            'crawler': 'SZSE',
                             'symbol': item['agdm'],
                             'name': normalize_stock_name(item['agjc'][94:-8]),
                             'market': item['bk'],
@@ -109,7 +109,7 @@ def get_stock_info_from_szse(stock_type: InfoTypeSZSE) -> List[StockData]:
                 elif stock_type == InfoTypeSZSE.StockListedOnB:
                     stock_data_list.append(
                         {
-                            'exchange': 'SZSE',
+                            'crawler': 'SZSE',
                             'symbol': item['bgdm'],
                             'name': normalize_stock_name(item['bgjc'][94:-8]),
                             'market': 'B股',
@@ -119,7 +119,7 @@ def get_stock_info_from_szse(stock_type: InfoTypeSZSE) -> List[StockData]:
                 elif stock_type == InfoTypeSZSE.StockListedOnAAndB:
                     stock_data_list.append(
                         {
-                            'exchange': 'SZSE',
+                            'crawler': 'SZSE',
                             'symbol': item['agdm'],
                             'name': normalize_stock_name(item['agjc'][94:-8]),
                             'market': '主板',
@@ -128,7 +128,7 @@ def get_stock_info_from_szse(stock_type: InfoTypeSZSE) -> List[StockData]:
                     )
                     stock_data_list.append(
                         {
-                            'exchange': 'SZSE',
+                            'crawler': 'SZSE',
                             'symbol': item['bgdm'],
                             'name': normalize_stock_name(item['bgjc']),
                             'market': 'B股',
@@ -146,7 +146,7 @@ def get_stock_info_from_szse(stock_type: InfoTypeSZSE) -> List[StockData]:
                     if stock_type == InfoTypeSZSE.StockPaused:
                         stock_data_list.append(
                             {
-                                'exchange': 'SZSE',
+                                'crawler': 'SZSE',
                                 'symbol': symbol,
                                 'name': normalize_stock_name(item['zqjc']),
                                 'market': market,
@@ -157,7 +157,7 @@ def get_stock_info_from_szse(stock_type: InfoTypeSZSE) -> List[StockData]:
                     else:
                         stock_data_list.append(
                             {
-                                'exchange': 'SZSE',
+                                'crawler': 'SZSE',
                                 'symbol': symbol,
                                 'name': normalize_stock_name(item['zqjc']),
                                 'market': market,

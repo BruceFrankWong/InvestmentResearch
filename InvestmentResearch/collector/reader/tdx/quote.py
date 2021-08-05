@@ -10,7 +10,7 @@ import struct
 
 import pandas as pd
 
-from ...utility import CONFIGS
+from InvestmentResearch.utility import CONFIGS
 from .definition import TdxExchangeEnum, TdxPeriodEnum, TdxQuoteTypeEnum
 
 
