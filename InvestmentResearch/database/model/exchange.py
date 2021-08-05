@@ -40,7 +40,7 @@ class Exchange(BasicModel):
                f')>'
 
 
-class Notice(BasicModel):
+class ExchangeNotice(BasicModel):
     """
     Notice from exchange.
     """
