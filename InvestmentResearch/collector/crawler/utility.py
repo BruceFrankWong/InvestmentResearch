@@ -3,18 +3,27 @@
 __author__ = 'Bruce Frank Wong'
 
 
-from typing import List, Tuple
+from typing import Dict, List, Tuple
 
 import requests
 
-from InvestmentResearch.database.model.crawler import PageVisited
+from InvestmentResearch.database.model.crawler import PageVisitedRecord
 
 
-def crawl(url: str) -> str:
-    response = requests.get(url)
-    if response.status_code == 200:
-        response.encoding = 'utf-8'
-        return response.text
+class Crawler:
+    """
+    the crawler object.
+    """
+    def __init__(self, name: str, header: Dict[str, str]):
+        self._name = name
+        self._header = header
+        self._session = requests.Session()
+
+    def crawl(self, url: str) -> str:
+        response = self._session.get(url)
+        if response.status_code == 200:
+            response.encoding = 'utf-8'
+            return response.text
 
 
 def normalize_stock_name(name: str) -> str:

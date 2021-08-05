@@ -15,11 +15,11 @@ def test_database_interface():
     """
     from InvestmentResearch.utility import PACKAGE_PATH, CONFIGS
 
-    sqlite_path: Path = PACKAGE_PATH.joinpath(CONFIGS['database']['database'])
-    if sqlite_path.exists():
-        sqlite_path.unlink()
+    sqlite_path: Path = PACKAGE_PATH.joinpath(CONFIGS['database']['dev']['database'])
+    # if sqlite_path.exists():
+    #     sqlite_path.unlink()
     
-    assert sqlite_path.exists() is False
+    # assert sqlite_path.exists() is False
 
     from InvestmentResearch.database import db
     db.connect()

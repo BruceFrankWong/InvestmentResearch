@@ -12,7 +12,7 @@ from peewee import (
 from .base import BasicModel
 
 
-class PageVisited(BasicModel):
+class PageVisitedRecord(BasicModel):
     id = AutoField()
     url = CharField(verbose_name='URL')
     name = CharField(verbose_name='名称', null=True)

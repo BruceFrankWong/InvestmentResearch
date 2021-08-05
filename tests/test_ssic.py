@@ -5,7 +5,7 @@ __author__ = 'Bruce Frank Wong'
 
 import pytest
 
-from InvestmentResearch.collector.exchange.ssic import (
+from InvestmentResearch.collector.crawler.ssic import (
     SSICIndustryClassificationEnum,
     get_trading_calendar,
     get_industry,
